@@ -68,11 +68,11 @@ def login():
             # ensure hashed password matches user input
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
-                        session["user"] = request.form.get("username").lower()
-                        flash("Welcome, {}".format(
-                            request.form.get("username")))
-                        return redirect(url_for(
-                            "profile", username=session["user"]))
+                session["user"] = request.form.get("username").lower()
+                flash("Welcome, {}".format(
+                    request.form.get("username")))
+                return redirect(url_for(
+                    "profile", username=session["user"]))
             else:
                 # invalid password match
                 flash("Incorrect Username and/or Password")
@@ -168,7 +168,6 @@ def add_category():
         mongo.db.categories.insert_one(category)
         flash("New Category Added")
         return redirect(url_for("get_categories"))
-
     return render_template("add_category.html")
 
 
@@ -190,6 +189,7 @@ def delete_category(category_id):
     mongo.db.categories.remove({"_id": ObjectId(category_id)})
     flash("Category deleted")
     return redirect(url_for("get_categories"))
+
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
